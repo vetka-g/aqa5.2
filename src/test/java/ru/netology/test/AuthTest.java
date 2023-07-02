@@ -63,6 +63,16 @@ public class AuthTest {
     }
 
     @Test
+    @DisplayName("Should not login with missed user")
+    void shouldNotLoginWithMissedUser() {
+        var missedUser = getRegisteredUser("active");
+        $("[data-test-id=login] input").setValue("");
+        $("[data-test-id=password] input").setValue(missedUser.getPassword());
+        $("button.button").click();
+        $("[data-test-id=login].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения")).shouldBe(visible, Duration.ofSeconds(15));
+    }
+
+    @Test
     @DisplayName("Should not login with wrong password")
     void shouldNotLoginWithWrongPassword() {
         var wrongPassword = getRegisteredUser("active");
@@ -70,6 +80,16 @@ public class AuthTest {
         $("[data-test-id=password] input").setValue("wrongPassword");
         $("button.button").click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Ошибка! Неверно указан логин или пароль")).shouldBe(visible, Duration.ofSeconds(15));
+    }
+
+    @Test
+    @DisplayName("Should not login with missed password")
+    void shouldNotLoginWithMissedPassword() {
+        var missedPassword = getRegisteredUser("active");
+        $("[data-test-id=login] input").setValue(missedPassword.getLogin());
+        $("[data-test-id=password] input").setValue("");
+        $("button.button").click();
+        $("[data-test-id=password].input_invalid .input__sub").shouldHave(text("Поле обязательно для заполнения")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
 }
