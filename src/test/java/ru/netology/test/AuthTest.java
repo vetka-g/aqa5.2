@@ -3,6 +3,7 @@ package ru.netology.test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.netology.data.DataGenerator;
 
 import java.time.Duration;
 
@@ -56,7 +57,7 @@ public class AuthTest {
     @DisplayName("Should not login with wrong user")
     void shouldNotLoginWithWrongUser() {
         var wrongUser = getRegisteredUser("active");
-        $("[data-test-id=login] input").setValue("wrongUser");
+        $("[data-test-id=login] input").setValue(DataGenerator.getRandomLogin());
         $("[data-test-id=password] input").setValue(wrongUser.getPassword());
         $("button.button").click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Ошибка! Неверно указан логин или пароль")).shouldBe(visible, Duration.ofSeconds(15));
@@ -77,7 +78,7 @@ public class AuthTest {
     void shouldNotLoginWithWrongPassword() {
         var wrongPassword = getRegisteredUser("active");
         $("[data-test-id=login] input").setValue(wrongPassword.getLogin());
-        $("[data-test-id=password] input").setValue("wrongPassword");
+        $("[data-test-id=password] input").setValue(DataGenerator.getRandomPassword());
         $("button.button").click();
         $("[data-test-id=error-notification] .notification__content").shouldHave(text("Ошибка! Неверно указан логин или пароль")).shouldBe(visible, Duration.ofSeconds(15));
     }
